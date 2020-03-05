@@ -1,0 +1,26 @@
+version: "3.7"
+
+services:
+  mongo:
+    container_name: run-mongo
+    image: mongo
+    ports:
+      - 27017:27017
+    networks:
+      - golang_network
+  golang:
+    container_name: run-golang
+    image: golang-mongo
+    ports:
+      - 1234:1234
+    depends_on:
+      - mongo
+    environment:
+      - MONGO_HOST=run-mongo
+      - MONGO_PORT=27017
+    networks:
+      - golang_network
+
+networks:
+  golang_network:
+    name: golang_network
